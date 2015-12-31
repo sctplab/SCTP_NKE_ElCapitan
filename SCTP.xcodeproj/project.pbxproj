@@ -64,7 +64,6 @@
 		509BC21A1C357D11002A13DF /* tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tree.h; path = sys/tree.h; sourceTree = "<group>"; };
 		509BC21B1C357D11002A13DF /* ttydefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ttydefaults.h; path = sys/ttydefaults.h; sourceTree = "<group>"; };
 		509BC21E1C357D31002A13DF /* nd6_var.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nd6_var.h; path = netinet6/nd6_var.h; sourceTree = "<group>"; };
-		509BC2201C357D80002A13DF /* net */ = {isa = PBXFileReference; lastKnownFileType = folder; path = net; sourceTree = "<group>"; };
 		509BC2221C357DB0002A13DF /* classq */ = {isa = PBXFileReference; lastKnownFileType = folder; name = classq; path = net/classq; sourceTree = "<group>"; };
 		509BC2231C357DB0002A13DF /* flowadv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = flowadv.h; path = net/flowadv.h; sourceTree = "<group>"; };
 		509BC2241C357DB0002A13DF /* if_var.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = if_var.h; path = net/if_var.h; sourceTree = "<group>"; };
@@ -184,7 +183,6 @@
 		08FB7794FE84155DC02AAC07 /* SCTP */ = {
 			isa = PBXGroup;
 			children = (
-				509BC2201C357D80002A13DF /* net */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 				50BAFEB0107391E50005425A /* SCTP-Info.plist */,
