@@ -887,6 +887,7 @@ struct user32_sa_endpoints {
 #define MSG_NBIO	0x20000		/* FIONBIO mode, used by fifofs */
 #define MSG_SKIPCFIL	0x40000		/* skip pass content filter */
 #endif
+#define MSG_NOTIFICATION 0x80000        /* notification message */
 #ifdef	KERNEL
 #define MSG_USEUPCALL	0x80000000 /* Inherit upcall in sock_accept */
 #endif
