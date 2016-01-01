@@ -11,8 +11,13 @@ The SCTP NKE supports:
 * The authentication extension as specified in [RFC4895](https://tools.ietf.org/html/rfc4895).
 * The dynamic address reconfiguration extension as specified in [RFC5061](https://tools.ietf.org/html/rfc5061).
 * The stream reconfiguration extension as specified in [RFC6525](https://tools.ietf.org/html/rfc6525).
-* The UDP encapsulation as specified in [RFC6951](https://tools.ietf.org/html/rfc6951)
-* The SACK immediately extension specified in [RFC7053](https://tools.ietf.org/html/rfc7053).
+* The UDP encapsulation as specified in [RFC6951](https://tools.ietf.org/html/rfc6951).
+* The SACK immediately extension as specified in [RFC7053](https://tools.ietf.org/html/rfc7053).
+* The quick failover extension as specified in [draft-ietf-tsvwg-sctp-failover](https://tools.ietf.org/html/draft-ietf-tsvwg-sctp-failover).
+* The stream scheduler and user message interleaving extension partially as specified in [draft-ietf-tsvwg-sctp-ndata](https://tools.ietf.org/html/draft-ietf-tsvwg-sctp-ndata).
+* The NAT support partially as specified in [draft-ietf-tsvwg-natsupp](https://tools.ietf.org/html/draft-ietf-tsvwg-natsupp).
+* The non-renegable SACK extension as specified in [draft-tuexen-tsvwg-sctp-multipath](https://tools.ietf.org/html/draft-tuexen-tsvwg-sctp-mutipath).
+* The SCTP multipath extension as specified in [draft-tuexen-tsvwg-sctp-multipath](https://tools.ietf.org/html/draft-tuexen-tsvwg-sctp-multipath).
 
 Starting with Mac OS X 10.11, you can't load unsinged kernel extensions anymore without
 disabling the System Integrity Protection.
