@@ -1,5 +1,9 @@
 # SCTP_NKE_ElCapitan
-A version of the SCTP NKE running on Mac OS X 10.11 (El Capitan)
+A version of the SCTP NKE running on Mac OS X 10.11 (El Capitan).
+
+The sources are based on the SCTP implementation of the FreeBSD kernel modified to work
+within the Mac OS X kernel infrastructure as a network kernel extension. This supports
+the dynamic load and unload of the module without rebooting the operating system.
 
 Starting with Mac OS X 10.11, you can't load unsinged kernel extensions anymore without
 disabling the System Integrity Protection.
