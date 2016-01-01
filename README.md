@@ -25,18 +25,23 @@ When using Mac OS X 10.11, you can't load unsinged kernel extensions without dis
 See [Apple's documentation](https://developer.apple.com/library/mac/documentation/Security/Conceptual/System_Integrity_Protection_Guide/ConfiguringSystemIntegrityProtection/ConfiguringSystemIntegrityProtection.html) on how to disable it.
 I'm currently not providing an signed NKE, since I don't have the necessary certificate.
 
-## Installation of the SCTP Support KEXT
+## Installation
+Currently there is no installer provided. Therefore the following manual steps are required.
 
-## Installtion of the SCTP KEXT
+### Installation of the SCTP Support KEXT
 
-## Installation of Support Files
+### Installtion of the SCTP KEXT
 
-## Loading and unloading the SCTP KEXT
-You can load the SCTP kext by executing in the `Terminal` application
+### Installation of Support Files
+
+## Using the SCTP KEXT
+### Loading the SCTP KEXT
+You can load the SCTP kext by executing in a shell
 ```
 sudo kextload /Library/Extensions/SCTP.kext
 ```
-and unload it by executing
+### Unloading the SCTP KEXT
+You can unload the SCTP kext by executing in a shell
 ```
 sudo kextunload /Library/Extensions/SCTP.kext
 ```
