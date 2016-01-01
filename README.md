@@ -2,8 +2,8 @@
 A version of the SCTP NKE running on Mac OS X 10.11 (El Capitan).
 
 The sources are based on the SCTP implementation of the FreeBSD kernel modified to work
-within the Mac OS X kernel infrastructure as a network kernel extension. This supports
-the dynamic load and unload of the module without rebooting the operating system.
+within the Mac OS X kernel infrastructure as a network kernel extension. This allows
+the dynamic loading and unloading of the module without rebooting the operating system.
 
 The SCTP NKE supports:
 * The base protocol as specified in [RFC4960](https://tools.ietf.org/html/rfc4960).
