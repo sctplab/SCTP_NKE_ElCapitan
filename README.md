@@ -1,4 +1,4 @@
-# SCTP NKE running on Mac OS X 10.11 (El Capitan)
+# SCTP NKE for Mac OS X 10.11 (El Capitan)
 
 The sources are based on the SCTP implementation of the FreeBSD kernel modified to work
 within the Mac OS X kernel infrastructure as a network kernel extension. This allows
@@ -25,3 +25,18 @@ When using Mac OS X 10.11, you can't load unsinged kernel extensions without dis
 See [Apple's documentation](https://developer.apple.com/library/mac/documentation/Security/Conceptual/System_Integrity_Protection_Guide/ConfiguringSystemIntegrityProtection/ConfiguringSystemIntegrityProtection.html) on how to disable it.
 I'm currently not providing an signed NKE, since I don't have the necessary certificate.
 
+## Installation of the SCTP Support KEXT
+
+## Installtion of the SCTP KEXT
+
+## Installation of Support Files
+
+## Loading and unloading the SCTP KEXT
+You can load the SCTP kext by executing in the `Terminal` application
+```
+sudo kextload /Library/Extensions/SCTP.kext
+```
+and unload it by executing
+```
+sudo kextunload /Library/Extensions/SCTP.kext
+```
