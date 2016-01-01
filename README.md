@@ -10,6 +10,7 @@ The SCTP NKE supports:
 * The partial reliability extension as specified in [RFC3758](https://tools.ietf.org/html/rfc3758) and [RFC7496](https://tools.ietf.org/html/rfc7496).
 * The authentication extension as specified in [RFC4895](https://tools.ietf.org/html/rfc4895).
 * The dynamic address reconfiguration extension as specified in [RFC5061](https://tools.ietf.org/html/rfc5061).
+* The socket API for SCTP as specified in [RFC6458](https://tools.ietf.org/html/rfc6458).
 * The stream reconfiguration extension as specified in [RFC6525](https://tools.ietf.org/html/rfc6525).
 * The UDP encapsulation as specified in [RFC6951](https://tools.ietf.org/html/rfc6951).
 * The SACK immediately extension as specified in [RFC7053](https://tools.ietf.org/html/rfc7053).
