@@ -30,7 +30,7 @@ Currently there is no installer provided. Therefore the following manual steps a
 
 ### Installation of the SCTP Support KEXT
 
-### Installtion of the SCTP KEXT
+### Installation of the SCTP KEXT
 
 ### Installation of Support Files
 
