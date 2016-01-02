@@ -28,6 +28,13 @@ I'm currently not providing an signed NKE, since I don't have the necessary cert
 ## Installation
 Currently there is no installer provided. Therefore the following manual steps are required.
 
+### Prerequisites
+It is assumed that the comand line tools are installed via
+```
+xcode-select --install
+```
+and that the System Integrity Protection has been disabled.
+
 ### Installation of KEXTs
 
 ### Installation of Support Files
