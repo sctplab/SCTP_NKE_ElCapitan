@@ -29,13 +29,20 @@ I'm currently not providing an signed NKE, since I don't have the necessary cert
 Currently there is no installer provided. Therefore the following manual steps are required.
 
 ### Prerequisites
-It is assumed that the comand line tools are installed via
+It is assumed that the comand line tools are installed. This can be done
+executing
 ```
 xcode-select --install
 ```
-and that the System Integrity Protection has been disabled.
 
 ### Installation of KEXTs
+Execute the following commands:
+```
+sudo cp -R /Volumes/SCTP_NKE_ElCapitan_01/SCTPSupport.kext /Library/Extensions
+sudo cp -R /Volumes/SCTP_NKE_ElCapitan_01/SCTP.kext /Library/Extensions
+```
+The first extension is needed to export additional symbols from the kernel.
+The second extension contains the SCTP relevant code.
 
 ### Installation of Support Files
 Execute the following commands:
