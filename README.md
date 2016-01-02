@@ -27,6 +27,7 @@ I'm currently not providing an signed NKE, since I don't have the necessary cert
 
 ## Installation
 Currently there is no installer provided. Therefore the following manual steps are required.
+You can download a disk image containing all files at [SCTP_NKE_ElCapitan_Install_01.dmg](https://github.com/sctplab/SCTP_NKE_ElCapitan/releases/download/v01/SCTP_NKE_ElCapitan_Install_01.dmg).
 
 ### Prerequisites
 It is assumed that the comand line tools are installed. This can be done
