@@ -38,7 +38,11 @@ Execute the following commands:
 sudo cp /Volumes/SCTP_NKE_ElCapitan_01/socket.h /usr/include/sys/
 sudo cp /Volumes/SCTP_NKE_ElCapitan_01/sctp.h /usr/include/netinet/
 sudo cp /Volumes/SCTP_NKE_ElCapitan_01/sctp_uio.h /usr/include/netinet/
+sudo cp /Volumes/SCTP_NKE_ElCapitan_01/libsctp.dylib /usr/lib/
 ```
+Using the first command changes an existing file by adding a definition for
+`MSG_NOTIFICATION`. The other commands adds additional files.
+
 ## Using the SCTP KEXT
 ### Loading the SCTP KEXT
 You can load the SCTP kext by executing in a shell
