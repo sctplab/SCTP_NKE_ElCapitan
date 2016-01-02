@@ -28,9 +28,7 @@ I'm currently not providing an signed NKE, since I don't have the necessary cert
 ## Installation
 Currently there is no installer provided. Therefore the following manual steps are required.
 
-### Installation of the SCTP Support KEXT
-
-### Installation of the SCTP KEXT
+### Installation of KEXTs
 
 ### Installation of Support Files
 Execute the following commands:
@@ -40,8 +38,8 @@ sudo cp /Volumes/SCTP_NKE_ElCapitan_01/sctp.h /usr/include/netinet/
 sudo cp /Volumes/SCTP_NKE_ElCapitan_01/sctp_uio.h /usr/include/netinet/
 sudo cp /Volumes/SCTP_NKE_ElCapitan_01/libsctp.dylib /usr/lib/
 ```
-Using the first command changes an existing file by adding a definition for
-`MSG_NOTIFICATION`. The other commands adds additional files.
+The first command changes an existing file by adding a definition for
+`MSG_NOTIFICATION`. The other commands add additional files.
 
 ## Using the SCTP KEXT
 ### Loading the SCTP KEXT
