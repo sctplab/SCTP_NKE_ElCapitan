@@ -56,6 +56,9 @@ The first command changes an existing file by adding a definition for
 `MSG_NOTIFICATION`. The other commands add additional files.
 
 ## Using the SCTP KEXT
+Since the NKE's are not signed, you need the disable the System Integrity
+Protection as described above.
+
 ### Loading the SCTP KEXT
 You can load the SCTP kext by executing in a shell
 ```
