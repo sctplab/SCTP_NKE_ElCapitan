@@ -33,7 +33,12 @@ Currently there is no installer provided. Therefore the following manual steps a
 ### Installation of the SCTP KEXT
 
 ### Installation of Support Files
-
+Execute the following commands:
+```
+sudo cp /Volumes/SCTP_NKE_ElCapitan_01/socket.h /usr/include/sys/
+sudo cp /Volumes/SCTP_NKE_ElCapitan_01/sctp.h /usr/include/netinet/
+sudo cp /Volumes/SCTP_NKE_ElCapitan_01/sctp_uio.h /usr/include/netinet/
+```
 ## Using the SCTP KEXT
 ### Loading the SCTP KEXT
 You can load the SCTP kext by executing in a shell
