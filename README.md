@@ -23,7 +23,7 @@ The FreeBSD kernel stack and the SCTP NKE for Mac OS X supports:
 ## Note about using Unsigned Kernel Extensions
 When using Mac OS X 10.11, you can't load unsinged kernel extensions without disabling the System Integrity Protection.
 See [Apple's documentation](https://developer.apple.com/library/mac/documentation/Security/Conceptual/System_Integrity_Protection_Guide/ConfiguringSystemIntegrityProtection/ConfiguringSystemIntegrityProtection.html) on how to disable it.
-I'm currently not providing an signed NKE, since I don't have the necessary certificate.
+I'm currently not providing a signed NKE, since I don't have the necessary certificate.
 
 ## Installation
 Currently there is no installer provided. Therefore the following manual steps are required.
