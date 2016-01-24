@@ -1056,6 +1056,7 @@ sctp_sendv(int sd,
 	struct sockaddr *addr;
 	struct sockaddr_in *addr_in;
 	struct sockaddr_in6 *addr_in6;
+	sctp_assoc_t *assoc_id;
 
 	if ((addrcnt < 0) ||
 	    (iovcnt < 0) ||
@@ -1074,6 +1075,7 @@ sctp_sendv(int sd,
 		errno = ENOMEM;
 		return (-1);
 	}
+	assoc_id = NULL;
 	msg.msg_control = cmsgbuf;
 	msg.msg_controllen = 0;
 	cmsg = (struct cmsghdr *)cmsgbuf;
@@ -1096,7 +1098,8 @@ sctp_sendv(int sd,
 		cmsg->cmsg_len = CMSG_LEN(sizeof(struct sctp_sndinfo));
 		memcpy(CMSG_DATA(cmsg), info, sizeof(struct sctp_sndinfo));
 		msg.msg_controllen += CMSG_SPACE(sizeof(struct sctp_sndinfo));
-		cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_sndinfo)));		
+		cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_sndinfo)));
+		assoc_id = &(((struct sctp_sndinfo *)info)->snd_assoc_id);
 		break;
 	case SCTP_SENDV_PRINFO:
 		if ((info == NULL) || (infolen < sizeof(struct sctp_prinfo))) {
@@ -1137,7 +1140,8 @@ sctp_sendv(int sd,
 			cmsg->cmsg_len = CMSG_LEN(sizeof(struct sctp_sndinfo));
 			memcpy(CMSG_DATA(cmsg), &spa_info->sendv_sndinfo, sizeof(struct sctp_sndinfo));
 			msg.msg_controllen += CMSG_SPACE(sizeof(struct sctp_sndinfo));
-			cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_sndinfo)));		
+			cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_sndinfo)));
+			assoc_id = &(spa_info->sendv_sndinfo.snd_assoc_id);
 		}
 		if (spa_info->sendv_flags & SCTP_SEND_PRINFO_VALID) {
 			cmsg->cmsg_level = IPPROTO_SCTP;
@@ -1236,6 +1240,9 @@ sctp_sendv(int sd,
 	msg.msg_flags = 0;
 	ret = sendmsg(sd, &msg, flags);
 	free(cmsgbuf);
+	if ((ret >= 0) && (addrs != NULL) && (assoc_id != NULL)) {
+		*assoc_id = sctp_getassocid(sd, addrs);
+	}
 	return (ret);
 }
 
