@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 294688 2016-01-24 22:08:15Z tuexen $");
+__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 294694 2016-01-24 22:31:34Z tuexen $");
 #endif
 
 #include <stdio.h>
@@ -773,14 +773,19 @@ sctp_sendx(int sd, const void *msg, size_t msg_len,
 #ifdef SYS_sctp_generic_sendmsg
 	if (addrcnt == 1) {
 		socklen_t l;
+		ssize_t ret;
 
 		/*
 		 * Quick way, we don't need to do a connectx so lets use the
 		 * syscall directly.
 		 */
 		l = addrs->sa_len;
-		return (syscall(SYS_sctp_generic_sendmsg, sd,
-		    msg, msg_len, addrs, l, sinfo, flags));
+		ret = syscall(SYS_sctp_generic_sendmsg, sd,
+		    msg, msg_len, addrs, l, sinfo, flags);
+		if ((ret >= 0) && (sinfo != NULL)) {
+			sinfo->sinfo_assoc_id = sctp_getassocid(sd, addrs);
+		}
+		return (ret);
 	}
 #endif
 
