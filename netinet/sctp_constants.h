@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_constants.h 287669 2015-09-11 13:54:33Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_constants.h 295549 2016-02-11 22:29:39Z tuexen $");
 #endif
 
 #ifndef _NETINET_SCTP_CONSTANTS_H_
@@ -1003,10 +1003,7 @@ extern void getwintimeofday(struct timeval *tv);
      (((uint8_t *)&(a)->s_addr)[1] == 168)))
 
 #define IN4_ISLOOPBACK_ADDRESS(a) \
-    ((((uint8_t *)&(a)->s_addr)[0] == 127) && \
-     (((uint8_t *)&(a)->s_addr)[1] == 0) && \
-     (((uint8_t *)&(a)->s_addr)[2] == 0) && \
-     (((uint8_t *)&(a)->s_addr)[3] == 1))
+    (((uint8_t *)&(a)->s_addr)[0] == 127)
 
 #define IN4_ISLINKLOCAL_ADDRESS(a) \
     ((((uint8_t *)&(a)->s_addr)[0] == 169) && \
