@@ -77,8 +77,8 @@ __FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 295670 2016-02-16 20:33:18Z tuex
 #endif
 #endif
 
-extern struct sctp_cc_functions sctp_cc_functions[];
-extern struct sctp_ss_functions sctp_ss_functions[];
+extern const struct sctp_cc_functions sctp_cc_functions[];
+extern const struct sctp_ss_functions sctp_ss_functions[];
 
 void
 sctp_sblog(struct sockbuf *sb, struct sctp_tcb *stcb, int from, int incr)
