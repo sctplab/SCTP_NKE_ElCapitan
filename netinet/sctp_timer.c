@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_timer.c 295709 2016-02-17 18:04:22Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_timer.c 297312 2016-03-27 10:04:25Z tuexen $");
 #endif
 
 #define _IP_VHL
@@ -665,7 +665,7 @@ sctp_mark_all_for_resend(struct sctp_tcb *stcb,
 					sctp_misc_ints(SCTP_FLIGHT_LOG_DOWN_RSND_TO,
 						       chk->whoTo->flight_size,
 						       chk->book_size,
-						       (uintptr_t)chk->whoTo,
+						       (uint32_t)(uintptr_t)chk->whoTo,
 						       chk->rec.data.TSN_seq);
 				}
 				sctp_flight_size_decrease(chk);
@@ -793,7 +793,7 @@ sctp_mark_all_for_resend(struct sctp_tcb *stcb,
 					sctp_misc_ints(SCTP_FLIGHT_LOG_UP,
 						       chk->whoTo->flight_size,
 						       chk->book_size,
-						       (uintptr_t)chk->whoTo,
+						       (uint32_t)(uintptr_t)chk->whoTo,
 						       chk->rec.data.TSN_seq);
 				}
 

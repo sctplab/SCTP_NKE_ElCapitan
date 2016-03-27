@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_constants.h 295549 2016-02-11 22:29:39Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_constants.h 297312 2016-03-27 10:04:25Z tuexen $");
 #endif
 
 #ifndef _NETINET_SCTP_CONSTANTS_H_
@@ -73,6 +73,8 @@ extern void getwintimeofday(struct timeval *tv);
 
 /* Largest length of a chunk */
 #define SCTP_MAX_CHUNK_LENGTH 0xffff
+/* Largest length of an error cause */
+#define SCTP_MAX_CAUSE_LENGTH 0xffff
 /* Number of addresses where we just skip the counting */
 #define SCTP_COUNT_LIMIT 40
 
