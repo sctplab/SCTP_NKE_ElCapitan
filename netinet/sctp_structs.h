@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_structs.h 298942 2016-05-02 20:56:11Z pfg $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_structs.h 299637 2016-05-13 09:11:41Z tuexen $");
 #endif
 
 #ifndef _NETINET_SCTP_STRUCTS_H_
@@ -508,11 +508,6 @@ struct sctp_tmit_chunk {
 	uint8_t window_probe;
 };
 
-/*
- * The first part of this structure MUST be the entire sinfo structure. Maybe
- * I should have made it a sub structure... we can circle back later and do
- * that if we want.
- */
 struct sctp_queued_to_read {	/* sinfo structure Pluse more */
 	uint16_t sinfo_stream;	/* off the wire */
 	uint32_t sinfo_ssn;	/* off the wire */
