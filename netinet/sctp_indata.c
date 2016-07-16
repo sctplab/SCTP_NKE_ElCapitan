@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_indata.c 299744 2016-05-14 13:44:49Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_indata.c 302930 2016-07-16 08:11:43Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -971,11 +971,6 @@ place_chunk:
 			 * really should not happen since the FSN is
 			 * a TSN and it should have been dropped earlier.
 			 */
-			if (chk->data) {
-				sctp_m_freem(chk->data);
-				chk->data = NULL;
-			}
-			sctp_free_a_chunk(stcb, chk, SCTP_SO_NOT_LOCKED);
 			sctp_abort_in_reasm(stcb, control, chk,
 			                    abort_flag,
 			                    SCTP_FROM_SCTP_INDATA + SCTP_LOC_5);
