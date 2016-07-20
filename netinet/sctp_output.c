@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_output.c 302949 2016-07-17 13:14:51Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_output.c 303073 2016-07-20 06:29:26Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -12620,7 +12620,6 @@ sctp_send_deferred_reset_response(struct sctp_tcb *stcb,
 		return;
 	}
 	SCTP_BUF_RESV_UF(chk->data, SCTP_MIN_OVERHEAD);
-	sctp_add_stream_reset_result(chk, ent->seq, response);
 	/* setup chunk parameters */
 	chk->sent = SCTP_DATAGRAM_UNSENT;
 	chk->snd_count = 0;
@@ -12635,6 +12634,7 @@ sctp_send_deferred_reset_response(struct sctp_tcb *stcb,
 	ch->chunk_length = htons(chk->book_size);
 	atomic_add_int(&chk->whoTo->ref_count, 1);
 	SCTP_BUF_LEN(chk->data) = chk->send_size;
+	sctp_add_stream_reset_result(chk, ent->seq, response);
 	/* insert the chunk for sending */
 	TAILQ_INSERT_TAIL(&asoc->control_send_queue,
 			  chk,
