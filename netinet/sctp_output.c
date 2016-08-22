@@ -13610,7 +13610,9 @@ sctp_lower_sosend(struct socket *so,
 		SCTP_INP_RUNLOCK(inp);
 	} else if (sinfo_assoc_id) {
 		stcb = sctp_findassociation_ep_asocid(inp, sinfo_assoc_id, 1);
-		hold_tcblock = 1;
+		if (stcb != NULL) {
+			hold_tcblock = 1;
+		}
 	} else if (addr) {
 		/*-
 		 * Since we did not use findep we must
