@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 294694 2016-01-24 22:31:34Z tuexen $");
+__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 309683 2016-12-07 21:24:49Z tuexen $");
 #endif
 
 #include <stdio.h>
@@ -870,7 +870,7 @@ sctp_sendmsgx(int sd,
 	memset((void *)&sinfo, 0, sizeof(struct sctp_sndrcvinfo));
 	sinfo.sinfo_ppid = ppid;
 	sinfo.sinfo_flags = flags;
-	sinfo.sinfo_ssn = stream_no;
+	sinfo.sinfo_stream = stream_no;
 	sinfo.sinfo_timetolive = timetolive;
 	sinfo.sinfo_context = context;
 	return (sctp_sendx(sd, msg, len, addrs, addrcnt, &sinfo, 0));
