@@ -647,7 +647,7 @@
 				MODULE_STOP = SCTP_stop;
 				MODULE_VERSION = 6.0.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-Wno-address-of-packed-member";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.sctp.nke.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SCTP;
 				SDKROOT = macosx;
@@ -694,7 +694,7 @@
 				MODULE_START = SCTP_start;
 				MODULE_STOP = SCTP_stop;
 				MODULE_VERSION = 6.0.0;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-Wno-address-of-packed-member";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.sctp.nke.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SCTP;
 				SDKROOT = macosx;

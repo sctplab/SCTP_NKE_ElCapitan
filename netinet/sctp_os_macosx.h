@@ -539,4 +539,6 @@ void sctp_address_monitor_stop(void);
 void sctp_delayed_startup(void *);
 #define SCTP_PROCESS_STRUCT thread_t
 
+#define SCTP_IS_LISTENING(inp) ((inp->sctp_flags & SCTP_PCB_FLAGS_ACCEPTING) != 0)
+
 #endif
