@@ -952,7 +952,7 @@ sctp_address_monitor_cb(socket_t rt_sock, void *cookie SCTP_UNUSED, int watif SC
 	/* setup the receive iovec and msghdr */
 	iov.iov_base = rt_buffer;
 	iov.iov_len = sizeof(rt_buffer);
-	bzero(&msg, sizeof(msg));
+	memset(&msg, 0, sizeof(msg));
 	msg.msg_iov = &iov;
 	msg.msg_iovlen = 1;
 	length = 0;
@@ -1037,10 +1037,10 @@ sctp_over_udp_ipv4_cb(socket_t udp_sock, void *cookie SCTP_UNUSED, int watif SCT
 	struct sctp_chunkhdr *ch;
 	uint16_t port;
 
-	bzero((void *)&msg, sizeof(struct msghdr));
-	bzero((void *)&src, sizeof(struct sockaddr_in));
-	bzero((void *)&dst, sizeof(struct sockaddr_in));
-	bzero((void *)cmsgbuf, CMSG_SPACE(sizeof (struct in_addr)));
+	memset(&msg, 0, sizeof(struct msghdr));
+	memset(&src, 0, sizeof(struct sockaddr_in));
+	memset(&dst, 0, sizeof(struct sockaddr_in));
+	memset(cmsgbuf, 0, CMSG_SPACE(sizeof (struct in_addr)));
 
 	msg.msg_name = (void *)&src;
 	msg.msg_namelen = sizeof(struct sockaddr_in);
@@ -1147,10 +1147,10 @@ sctp_over_udp_ipv6_cb(socket_t udp_sock, void *cookie SCTP_UNUSED, int watif SCT
 	struct sctp_chunkhdr *ch;
 	uint16_t port;
 
-	bzero((void *)&msg, sizeof(struct msghdr));
-	bzero((void *)&src, sizeof(struct sockaddr_in6));
-	bzero((void *)&dst, sizeof(struct sockaddr_in6));
-	bzero((void *)cmsgbuf, CMSG_SPACE(sizeof (struct in6_pktinfo)));
+	memset(&msg, 0, sizeof(struct msghdr));
+	memset(&src, 0, sizeof(struct sockaddr_in6));
+	memset(&dst, 0, sizeof(struct sockaddr_in6));
+	memset(cmsgbuf, 0, CMSG_SPACE(sizeof (struct in6_pktinfo)));
 
 	msg.msg_name = (void *)&src;
 	msg.msg_namelen = sizeof(struct sockaddr_in6);

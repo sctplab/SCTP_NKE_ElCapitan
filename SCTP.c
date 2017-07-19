@@ -195,11 +195,11 @@ SCTP_start(kmod_info_t * ki __attribute__((unused)), void * d __attribute__((unu
 	old_pr6  = ip6_protox[IPPROTO_SCTP];
 #endif
 
-	bzero(&sctp4_seqpacket, sizeof(struct protosw));
-	bzero(&sctp4_stream,    sizeof(struct protosw));
+	memset(&sctp4_seqpacket, 0, sizeof(struct protosw));
+	memset(&sctp4_stream,    0, sizeof(struct protosw));
 #ifdef INET6
-	bzero(&sctp6_seqpacket, sizeof(struct protosw));
-	bzero(&sctp6_stream,    sizeof(struct protosw));
+	memset(&sctp6_seqpacket, 0, sizeof(struct protosw));
+	memset(&sctp6_stream,    0, sizeof(struct protosw));
 #endif
 
 	sctp4_seqpacket.pr_type      = SOCK_SEQPACKET;

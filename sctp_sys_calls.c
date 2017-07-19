@@ -131,7 +131,7 @@ SCTPPrintAnAddress(struct sockaddr *a)
 static void
 in6_sin6_2_sin(struct sockaddr_in *sin, struct sockaddr_in6 *sin6)
 {
-	bzero(sin, sizeof(*sin));
+	memset(sin, 0, sizeof(*sin));
 	sin->sin_len = sizeof(struct sockaddr_in);
 	sin->sin_family = AF_INET;
 	sin->sin_port = sin6->sin6_port;
