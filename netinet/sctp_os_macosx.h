@@ -416,11 +416,6 @@ typedef struct rtentry	sctp_rtentry_t;
 #define INP_CHECK_SOCKAF(so, af) (INP_SOCKAF(so) == af)
 #endif
 
-/* Future zero copy wakeup/send  function */
-#define SCTP_ZERO_COPY_EVENT(inp, so)
-/* This is re-pulse ourselves for sendbuf */
-#define SCTP_ZERO_COPY_SENDQ_EVENT(inp, so)
-
 /*
  * SCTP protocol specific mbuf flags.
  */
