@@ -32,7 +32,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_pcb.c 323833 2017-09-20 21:29:54Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_pcb.c 323902 2017-09-22 06:07:47Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -2875,7 +2875,9 @@ sctp_inpcb_alloc(struct socket *so, uint32_t vrf_id)
 		inp->sctp_flags = (SCTP_PCB_FLAGS_TCPTYPE |
 		    SCTP_PCB_FLAGS_UNBOUND);
 		/* Be sure we have blocking IO by default */
+		SOCK_LOCK(so);
 		SCTP_CLEAR_SO_NBIO(so);
+		SOCK_UNLOCK(so);
 #if defined(__Panda__)
 	} else if (SCTP_SO_TYPE(so) == SOCK_FASTSEQPACKET) {
 		inp->sctp_flags = (SCTP_PCB_FLAGS_UDPTYPE |
