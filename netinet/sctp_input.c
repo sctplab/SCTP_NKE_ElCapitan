@@ -6289,7 +6289,7 @@ sctp_input(i_pak, va_alist)
 	if (SCTP_BASE_SYSCTL(sctp_no_csum_on_loopback) &&
 	    ((src.sin_addr.s_addr == dst.sin_addr.s_addr) ||
 	     (SCTP_IS_IT_LOOPBACK(m)))) {
-		SCTP_STAT_INCR(sctps_recvnocrc);
+		SCTP_STAT_INCR(sctps_recvhwcrc);
 		compute_crc = 0;
 	} else {
 #endif

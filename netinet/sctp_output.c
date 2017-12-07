@@ -4432,7 +4432,7 @@ sctp_lowlevel_chunk_output(struct sctp_inpcb *inp,
 				sctphdr->checksum = sctp_calculate_cksum(m, sizeof(struct ip));
 				SCTP_STAT_INCR(sctps_sendswcrc);
 			} else {
-				SCTP_STAT_INCR(sctps_sendnocrc);
+				SCTP_STAT_INCR(sctps_sendhwcrc);
 			}
 #endif
 		}
@@ -4875,7 +4875,7 @@ sctp_lowlevel_chunk_output(struct sctp_inpcb *inp,
 				sctphdr->checksum = sctp_calculate_cksum(m, sizeof(struct ip6_hdr));
 				SCTP_STAT_INCR(sctps_sendswcrc);
 			} else {
-				SCTP_STAT_INCR(sctps_sendnocrc);
+				SCTP_STAT_INCR(sctps_sendhwcrc);
 			}
 #endif
 		}

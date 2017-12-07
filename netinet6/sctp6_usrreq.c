@@ -298,7 +298,7 @@ sctp6_input(struct mbuf **i_pak, int *offp, int proto)
 #else
 	if (SCTP_BASE_SYSCTL(sctp_no_csum_on_loopback) &&
 	    (IN6_ARE_ADDR_EQUAL(&src.sin6_addr, &dst.sin6_addr))) {
-		SCTP_STAT_INCR(sctps_recvnocrc);
+		SCTP_STAT_INCR(sctps_recvhwcrc);
 		compute_crc = 0;
 	} else {
 #endif
