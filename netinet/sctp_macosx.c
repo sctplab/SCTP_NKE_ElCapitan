@@ -1111,18 +1111,12 @@ sctp_over_udp_ipv4_cb(socket_t udp_sock, void *cookie SCTP_UNUSED, int watif SCT
 	if (SCTP_IS_IT_BROADCAST(dst.sin_addr, m)) {
 		goto out;
 	}
-#if defined(SCTP_WITH_NO_CSUM)
-	SCTP_STAT_INCR(sctps_recvnocrc);
-#else
 	SCTP_STAT_INCR(sctps_recvswcrc);
-#endif
 	sctp_common_input_processing(&m, 0, offset, (int)length,
 	                             (struct sockaddr *)&src,
 	                             (struct sockaddr *)&dst,
 	                             sh, ch,
-#if !defined(SCTP_WITH_NO_CSUM)
 	                             1,
-#endif
 	                             0,
 	                             SCTP_DEFAULT_VRFID, port);
  out:
@@ -1228,18 +1222,12 @@ sctp_over_udp_ipv6_cb(socket_t udp_sock, void *cookie SCTP_UNUSED, int watif SCT
 	if (IN6_IS_ADDR_MULTICAST(&dst.sin6_addr)) {
 		goto out;
 	}
-#if defined(SCTP_WITH_NO_CSUM)
-	SCTP_STAT_INCR(sctps_recvnocrc);
-#else
 	SCTP_STAT_INCR(sctps_recvswcrc);
-#endif
 	sctp_common_input_processing(&m, 0, offset, (int)length,
 	                             (struct sockaddr *)&src,
 	                             (struct sockaddr *)&dst,
 	                             sh, ch,
-#if !defined(SCTP_WITH_NO_CSUM)
 	                             1,
-#endif
 	                             0,
 	                             SCTP_DEFAULT_VRFID, port);
  out:

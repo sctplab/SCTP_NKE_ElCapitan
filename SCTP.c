@@ -74,9 +74,7 @@ extern struct sysctl_oid sysctl__net_inet_sctp_reconfig_enable;
 extern struct sysctl_oid sysctl__net_inet_sctp_nrsack_enable;
 extern struct sysctl_oid sysctl__net_inet_sctp_pktdrop_enable;
 extern struct sysctl_oid sysctl__net_inet_sctp_fr_maxburst;
-#if !defined(SCTP_WITH_NO_CSUM)
 extern struct sysctl_oid sysctl__net_inet_sctp_loopback_nocsum;
-#endif
 extern struct sysctl_oid sysctl__net_inet_sctp_peer_chkoh;
 extern struct sysctl_oid sysctl__net_inet_sctp_maxburst;
 extern struct sysctl_oid sysctl__net_inet_sctp_maxchunks;
@@ -379,9 +377,7 @@ SCTP_start(kmod_info_t * ki __attribute__((unused)), void * d __attribute__((unu
 	sysctl_register_oid(&sysctl__net_inet_sctp_nrsack_enable);
 	sysctl_register_oid(&sysctl__net_inet_sctp_pktdrop_enable);
 	sysctl_register_oid(&sysctl__net_inet_sctp_fr_maxburst);
-#if !defined(SCTP_WITH_NO_CSUM)
 	sysctl_register_oid(&sysctl__net_inet_sctp_loopback_nocsum);
-#endif
 	sysctl_register_oid(&sysctl__net_inet_sctp_peer_chkoh);
 	sysctl_register_oid(&sysctl__net_inet_sctp_maxburst);
 	sysctl_register_oid(&sysctl__net_inet_sctp_maxchunks);
@@ -527,9 +523,7 @@ SCTP_stop(kmod_info_t * ki __attribute__((unused)), void * d __attribute__((unus
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_nrsack_enable);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_pktdrop_enable);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_fr_maxburst);
-#if !defined(SCTP_WITH_NO_CSUM)
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_loopback_nocsum);
-#endif
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_peer_chkoh);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_maxburst);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_maxchunks);
