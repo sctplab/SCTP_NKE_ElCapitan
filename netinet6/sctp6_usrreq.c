@@ -428,6 +428,7 @@ sctp6_notify(struct sctp_inpcb *inp,
 void
 sctp6_ctlinput(int cmd, struct sockaddr *pktdst, void *d, struct ifnet *ifp SCTP_UNUSED)
 #else
+void
 sctp6_ctlinput(int cmd, struct sockaddr *pktdst, void *d)
 #endif
 {
