@@ -432,6 +432,17 @@ m_pulldown(struct mbuf *mbuf, int offset, int len, int *offsetp)
 }
 #endif
 
+int
+timingsafe_bcmp(const void *b1, const void *b2, size_t n)
+{
+	const unsigned char *p1 = b1, *p2 = b2;
+	int ret = 0;
+
+	for (; n > 0; n--)
+		ret |= *p1++ ^ *p2++;
+	return (ret != 0);
+}
+
 static void
 sctp_print_addr(struct sockaddr *sa)
 {	
