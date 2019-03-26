@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 343961 2019-02-10 14:02:14Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 345467 2019-03-24 12:13:05Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -577,7 +577,7 @@ sctp_wakeup_log(struct sctp_tcb *stcb, uint32_t wake_cnt, int from)
 }
 
 void
-sctp_log_block(uint8_t from, struct sctp_association *asoc, size_t sendlen)
+sctp_log_block(uint8_t from, struct sctp_association *asoc, ssize_t sendlen)
 {
 #if defined(SCTP_LOCAL_TRACE_BUF)
 	struct sctp_cwnd_log sctp_clog;
@@ -5650,8 +5650,9 @@ sctp_sorecvmsg(struct socket *so,
 	 *
 	 */
 	struct sctp_inpcb *inp = NULL;
-	int my_len = 0;
-	int cp_len = 0, error = 0;
+	ssize_t my_len = 0;
+	ssize_t cp_len = 0;
+	int error = 0;
 	struct sctp_queued_to_read *control = NULL, *ctl = NULL, *nxt = NULL;
 	struct mbuf *m = NULL;
 	struct sctp_tcb *stcb = NULL;
@@ -5660,7 +5661,7 @@ sctp_sorecvmsg(struct socket *so,
 	int out_flags = 0, in_flags = 0;
 	int block_allowed = 1;
 	uint32_t freed_so_far = 0;
-	uint32_t copied_so_far = 0;
+	ssize_t copied_so_far = 0;
 	int in_eeor_mode = 0;
 	int no_rcv_needed = 0;
 	uint32_t rwnd_req = 0;
@@ -6057,7 +6058,7 @@ sctp_sorecvmsg(struct socket *so,
 			 * we then will go to the sctp_user_rcvd() that will
 			 * not lock until it KNOWs it MUST send a WUP-SACK.
 			 */
-			freed_so_far = stcb->freed_by_sorcv_sincelast;
+			freed_so_far = (uint32_t)stcb->freed_by_sorcv_sincelast;
 			stcb->freed_by_sorcv_sincelast = 0;
 		}
 	}
@@ -6219,14 +6220,14 @@ sctp_sorecvmsg(struct socket *so,
 			/* Move out all we can */
 #if defined(__APPLE__)
 #if defined(APPLE_LEOPARD)
-			cp_len = (int)uio->uio_resid;
+			cp_len = uio->uio_resid;
 #else
-			cp_len = (int)uio_resid(uio);
+			cp_len = uio_resid(uio);
 #endif
 #else
-			cp_len = (int)uio->uio_resid;
+			cp_len = uio->uio_resid;
 #endif
-			my_len = (int)SCTP_BUF_LEN(m);
+			my_len = SCTP_BUF_LEN(m);
 			if (cp_len > my_len) {
 				/* not enough in this buf */
 				cp_len = my_len;
@@ -6239,7 +6240,7 @@ sctp_sorecvmsg(struct socket *so,
 			SCTP_SOCKET_UNLOCK(so, 0);
 #endif
 			if (cp_len > 0)
-				error = uiomove(mtod(m, char *), cp_len, uio);
+				error = uiomove(mtod(m, char *), (int)cp_len, uio);
 #if defined(__APPLE__)
 			SCTP_SOCKET_LOCK(so, 0);
 #endif
@@ -6287,7 +6288,7 @@ sctp_sorecvmsg(struct socket *so,
 						   control->do_not_ref_stcb?NULL:stcb, SCTP_LOG_SBRESULT, 0);
 					}
 					copied_so_far += cp_len;
-					freed_so_far += cp_len;
+					freed_so_far += (uint32_t)cp_len;
 					freed_so_far += MSIZE;
 					atomic_subtract_int(&control->length, cp_len);
 					control->data = sctp_m_free(m);
@@ -6322,9 +6323,9 @@ sctp_sorecvmsg(struct socket *so,
 				}
 				if ((in_flags & MSG_PEEK) == 0) {
 					SCTP_BUF_RESV_UF(m, cp_len);
-					SCTP_BUF_LEN(m) -= cp_len;
+					SCTP_BUF_LEN(m) -= (int)cp_len;
 					if (SCTP_BASE_SYSCTL(sctp_logging_level) & SCTP_SB_LOGGING_ENABLE) {
-						sctp_sblog(&so->so_rcv, control->do_not_ref_stcb?NULL:stcb, SCTP_LOG_SBFREE, cp_len);
+						sctp_sblog(&so->so_rcv, control->do_not_ref_stcb?NULL:stcb, SCTP_LOG_SBFREE, (int)cp_len);
 					}
 					atomic_subtract_int(&so->so_rcv.sb_cc, cp_len);
 					if ((control->do_not_ref_stcb == 0) &&
@@ -6332,7 +6333,7 @@ sctp_sorecvmsg(struct socket *so,
 						atomic_subtract_int(&stcb->asoc.sb_cc, cp_len);
 					}
 					copied_so_far += cp_len;
-					freed_so_far += cp_len;
+					freed_so_far += (uint32_t)cp_len;
 					freed_so_far += MSIZE;
 					if (SCTP_BASE_SYSCTL(sctp_logging_level) & SCTP_SB_LOGGING_ENABLE) {
 						sctp_sblog(&so->so_rcv, control->do_not_ref_stcb?NULL:stcb,
@@ -6595,7 +6596,7 @@ sctp_sorecvmsg(struct socket *so,
 				   control->do_not_ref_stcb?NULL:stcb, SCTP_LOG_SBFREE, SCTP_BUF_LEN(m));
 			}
 			sctp_sbfree(control, stcb, &so->so_rcv, m);
-			freed_so_far += SCTP_BUF_LEN(m);
+			freed_so_far += (uint32_t)SCTP_BUF_LEN(m);
 			freed_so_far += MSIZE;
 			if (SCTP_BASE_SYSCTL(sctp_logging_level) & SCTP_SB_LOGGING_ENABLE) {
 				sctp_sblog(&so->so_rcv,
