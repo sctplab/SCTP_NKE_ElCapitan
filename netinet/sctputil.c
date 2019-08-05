@@ -8097,8 +8097,7 @@ sctp_recv_icmp6_tunneled_packet(int cmd, struct sockaddr *sa, void *d, void *ctx
 	} else {
 #if defined(__FreeBSD__) && __FreeBSD_version < 500000
 		if (PRC_IS_REDIRECT(cmd) && (inp != NULL)) {
-			in6_rtchange((struct in6pcb *)inp,
-			    inet6ctlerrmap[cmd]);
+			in6_rtchange(inp, inet6ctlerrmap[cmd]);
 		}
 #endif
 		if ((stcb == NULL) && (inp != NULL)) {

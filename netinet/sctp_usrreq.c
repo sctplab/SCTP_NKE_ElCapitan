@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_usrreq.c 350248 2019-07-23 18:07:36Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_usrreq.c 350588 2019-08-05 13:22:15Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -2012,10 +2012,7 @@ sctp_do_connect_x(struct socket *so, struct sctp_inpcb *inp, void *optval,
 	}
 	if ((inp->sctp_flags & SCTP_PCB_FLAGS_BOUND_V6) &&
 	    (num_v4 > 0)) {
-		struct in6pcb *inp6;
-
-		inp6 = (struct in6pcb *)inp;
-		if (SCTP_IPV6_V6ONLY(inp6)) {
+		if (SCTP_IPV6_V6ONLY(inp)) {
 			/*
 			 * if IPV6_V6ONLY flag, ignore connections destined
 			 * to a v4 addr or v4-mapped addr
@@ -7866,7 +7863,7 @@ sctp_connect(struct socket *so, struct mbuf *nam, struct proc *p)
 	case AF_INET6:
 	{
 #if defined(__FreeBSD__) && __FreeBSD_version >= 800000
-		struct sockaddr_in6 *sin6p;
+		struct sockaddr_in6 *sin6;
 
 #endif
 		if (addr->sa_len != sizeof(struct sockaddr_in6)) {
@@ -7874,8 +7871,8 @@ sctp_connect(struct socket *so, struct mbuf *nam, struct proc *p)
 			return (EINVAL);
 		}
 #if defined(__FreeBSD__) && __FreeBSD_version >= 800000
-		sin6p = (struct sockaddr_in6 *)addr;
-		if (p != NULL && (error = prison_remote_ip6(p->td_ucred, &sin6p->sin6_addr)) != 0) {
+		sin6 = (struct sockaddr_in6 *)addr;
+		if (p != NULL && (error = prison_remote_ip6(p->td_ucred, &sin6->sin6_addr)) != 0) {
 			SCTP_LTRACE_ERR_RET(inp, NULL, NULL, SCTP_FROM_SCTP_USRREQ, error);
 			return (error);
 		}
@@ -7887,7 +7884,7 @@ sctp_connect(struct socket *so, struct mbuf *nam, struct proc *p)
 	case AF_INET:
 	{
 #if defined(__FreeBSD__) && __FreeBSD_version >= 800000
-		struct sockaddr_in *sinp;
+		struct sockaddr_in *sin;
 
 #endif
 #if !defined(__Userspace_os_Windows)
@@ -7897,8 +7894,8 @@ sctp_connect(struct socket *so, struct mbuf *nam, struct proc *p)
 		}
 #endif
 #if defined(__FreeBSD__) && __FreeBSD_version >= 800000
-		sinp = (struct sockaddr_in *)addr;
-		if (p != NULL && (error = prison_remote_ip4(p->td_ucred, &sinp->sin_addr)) != 0) {
+		sin = (struct sockaddr_in *)addr;
+		if (p != NULL && (error = prison_remote_ip4(p->td_ucred, &sin->sin_addr)) != 0) {
 			SCTP_LTRACE_ERR_RET(inp, NULL, NULL, SCTP_FROM_SCTP_USRREQ, error);
 			return (error);
 		}
