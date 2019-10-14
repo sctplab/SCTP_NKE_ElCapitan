@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_cc_functions.c 310590 2016-12-26 11:06:41Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_cc_functions.c 353488 2019-10-14 13:02:49Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -50,8 +50,8 @@ __FBSDID("$FreeBSD: head/sys/netinet/sctp_cc_functions.c 310590 2016-12-26 11:06
 #include <netinet/sctp_timer.h>
 #include <netinet/sctp_auth.h>
 #include <netinet/sctp_asconf.h>
-#if defined(__FreeBSD__) && __FreeBSD_version >= 803000
-#include <netinet/sctp_dtrace_declare.h>
+#if defined(__FreeBSD__)
+#include <netinet/sctp_kdtrace.h>
 #endif
 
 #define SHIFT_MPTCP_MULTI_N 40
