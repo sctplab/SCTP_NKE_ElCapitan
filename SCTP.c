@@ -128,6 +128,7 @@ extern struct sysctl_oid sysctl__net_inet_sctp_rttvar_eqret;
 extern struct sysctl_oid sysctl__net_inet_sctp_rttvar_steady_step;
 extern struct sysctl_oid sysctl__net_inet_sctp_use_dcccecn;
 extern struct sysctl_oid sysctl__net_inet_sctp_blackhole;
+extern struct sysctl_oid sysctl__net_inet_sctp_sendall_limit;
 extern struct sysctl_oid sysctl__net_inet_sctp_diag_info_code;
 #if defined(SCTP_DEBUG)
 extern struct sysctl_oid sysctl__net_inet_sctp_debug;
@@ -431,6 +432,7 @@ SCTP_start(kmod_info_t * ki __attribute__((unused)), void * d __attribute__((unu
 	sysctl_register_oid(&sysctl__net_inet_sctp_rttvar_steady_step);
 	sysctl_register_oid(&sysctl__net_inet_sctp_use_dcccecn);
 	sysctl_register_oid(&sysctl__net_inet_sctp_blackhole);
+	sysctl_register_oid(&sysctl__net_inet_sctp_sendall_limit);
 	sysctl_register_oid(&sysctl__net_inet_sctp_diag_info_code);
 #ifdef SCTP_DEBUG
 	sysctl_register_oid(&sysctl__net_inet_sctp_debug);
@@ -577,6 +579,7 @@ SCTP_stop(kmod_info_t * ki __attribute__((unused)), void * d __attribute__((unus
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_rttvar_steady_step);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_use_dcccecn);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_blackhole);
+	sysctl_unregister_oid(&sysctl__net_inet_sctp_sendall_limit);
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_diag_info_code);
 #ifdef SCTP_DEBUG
 	sysctl_unregister_oid(&sysctl__net_inet_sctp_debug);
