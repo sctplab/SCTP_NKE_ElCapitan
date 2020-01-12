@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_cc_functions.c 353488 2019-10-14 13:02:49Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_cc_functions.c 356660 2020-01-12 15:45:27Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -1962,7 +1962,7 @@ htcp_cong_time(struct htcp *ca)
 static inline uint32_t
 htcp_ccount(struct htcp *ca)
 {
-	return (htcp_cong_time(ca)/ca->minRTT);
+	return (ca->minRTT == 0 ? htcp_cong_time(ca) : htcp_cong_time(ca)/ca->minRTT);
 }
 
 static inline void
