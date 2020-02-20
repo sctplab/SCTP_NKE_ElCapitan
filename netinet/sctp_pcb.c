@@ -6782,7 +6782,13 @@ sctp_pcb_init(void)
 	(void)pthread_cond_init(&sctp_it_ctl.iterator_wakeup, NULL);
 #endif
 #endif
+#if defined(__Userspace__)
+	if (start_threads) {
+		sctp_startup_iterator();
+	}
+#else
 	sctp_startup_iterator();
+#endif
 
 #if defined(__FreeBSD__) && defined(SCTP_MCORE_INPUT) && defined(SMP)
 	sctp_startup_mcore_threads();
@@ -6871,7 +6877,7 @@ sctp_pcb_finish(void)
 	}
 #endif
 #if defined(__Userspace__)
-	if (sctp_it_ctl.thread_proc) {
+	if (SCTP_BASE_VAR(iterator_thread_started)) {
 #if defined(__Userspace_os_Windows)
 		WaitForSingleObject(sctp_it_ctl.thread_proc, INFINITE);
 		CloseHandle(sctp_it_ctl.thread_proc);
