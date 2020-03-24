@@ -55,6 +55,8 @@
         lck_mtx_free(SCTP_BASE_INFO(wq_addr_mtx), SCTP_MTX_GRP)
 #define SCTP_WQ_ADDR_LOCK()	lck_mtx_lock(SCTP_BASE_INFO(wq_addr_mtx))
 #define SCTP_WQ_ADDR_UNLOCK() lck_mtx_unlock(SCTP_BASE_INFO(wq_addr_mtx))
+#define SCTP_WQ_ADDR_LOCK_ASSERT() \
+	lck_mtx_assert(SCTP_BASE_INFO(wq_addr_mtx), LCK_MTX_ASSERT_OWNED)
 
 /* Lock for INFO stuff */
 #if defined(APPLE_LEOPARD) || defined(APPLE_SNOWLEOPARD) || defined(APPLE_LION) || defined(APPLE_MOUNTAINLION)
@@ -127,6 +129,10 @@
 	lck_rw_lock_exclusive((_inp)->inp_mtx)
 #define SCTP_INP_WUNLOCK(_inp) \
 	lck_rw_unlock_exclusive((_inp)->inp_mtx)
+#define SCTP_INP_RLOCK_ASSERT(_inp) \
+	lck_mtx_assert((_inp)->inp_mtx, LCK_RW_ASSERT_SHARED)
+#define SCTP_INP_WLOCK_ASSERT(_inp) \
+	lck_mtx_assert((_inp)->inp_mtx, LCK_RW_ASSERT_EXCLUSIVE)
 #else
 #define SCTP_INP_LOCK_INIT(_inp) \
 	(_inp)->inp_mtx = lck_mtx_alloc_init(SCTP_MTX_GRP, SCTP_MTX_ATTR)
@@ -140,6 +146,10 @@
 	lck_mtx_lock((_inp)->inp_mtx)
 #define SCTP_INP_WUNLOCK(_inp) \
 	lck_mtx_unlock((_inp)->inp_mtx)
+#define SCTP_INP_RLOCK_ASSERT(_inp) \
+	lck_mtx_assert((_inp)->inp_mtx, LCK_MTX_ASSERT_OWNED)
+#define SCTP_INP_WLOCK_ASSERT(_inp) \
+	lck_mtx_assert((_inp)->inp_mtx, LCK_MTX_ASSERT_OWNED)
 #endif
 #define SCTP_INP_INCR_REF(_inp) atomic_add_int(&((_inp)->refcount), 1)
 #define SCTP_INP_DECR_REF(_inp) atomic_add_int(&((_inp)->refcount), -1)
