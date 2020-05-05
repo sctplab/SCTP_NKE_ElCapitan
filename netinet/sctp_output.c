@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_output.c 359809 2020-04-11 20:36:54Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_output.c 360662 2020-05-05 17:52:44Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -11265,7 +11265,7 @@ sctp_send_sack(struct sctp_tcb *stcb, int so_locked
 		if (highest_tsn > asoc->mapping_array_base_tsn) {
 			siz = (((highest_tsn - asoc->mapping_array_base_tsn) + 1) + 7) / 8;
 		} else {
-			siz = (((MAX_TSN - highest_tsn) + 1) + highest_tsn + 7) / 8;
+			siz = (((MAX_TSN - asoc->mapping_array_base_tsn) + 1) + highest_tsn + 7) / 8;
 		}
 	} else {
 		sack = NULL;
@@ -13011,8 +13011,6 @@ sctp_send_str_reset_req(struct sctp_tcb *stcb,
 			/* now anything on those queues? */
 			TAILQ_FOREACH_SAFE(sp, &oldstream[i].outqueue, next, nsp) {
 				TAILQ_REMOVE(&oldstream[i].outqueue, sp, next);
-				sp->ss_next.tqe_next = NULL;
-				sp->ss_next.tqe_prev = NULL;
 				TAILQ_INSERT_TAIL(&stcb->asoc.strmout[i].outqueue, sp, next);
 			}
 
