@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_indata.c 360878 2020-05-10 17:19:19Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_indata.c 361116 2020-05-16 19:26:39Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -169,6 +169,9 @@ sctp_build_readq_entry(struct sctp_tcb *stcb,
 	read_queue_e->data = dm;
 	read_queue_e->stcb = stcb;
 	read_queue_e->port_from = stcb->rport;
+	if (stcb->asoc.state & SCTP_STATE_ABOUT_TO_BE_FREED) {
+		read_queue_e->do_not_ref_stcb = 1;
+	}
 failed_build:
 	return (read_queue_e);
 }
@@ -790,6 +793,7 @@ sctp_build_readq_entry_from_ctl(struct sctp_queued_to_read *nc, struct sctp_queu
 	atomic_add_int(&nc->whoFrom->ref_count, 1);
 	nc->stcb = control->stcb;
 	nc->port_from = control->port_from;
+	nc->do_not_ref_stcb = control->do_not_ref_stcb;
 }
 
 static void
