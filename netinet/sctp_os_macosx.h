@@ -304,6 +304,7 @@ extern void *sctp_calloutq_mtx;
 #define SCTP_BUF_PREPEND(m, plen, how) ((m) = sctp_m_prepend_2((m), (plen), (how)))
 struct mbuf *sctp_m_prepend_2(struct mbuf *m, int len, int how);
 
+#define SCTP_SNPRINTF(...) snprintf(__VA_ARGS__)
 
 /*************************/
 /*      MTU              */
