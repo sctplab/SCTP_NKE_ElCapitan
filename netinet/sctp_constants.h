@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_constants.h 359405 2020-03-28 20:25:45Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_constants.h 361872 2020-06-06 18:20:09Z tuexen $");
 #endif
 
 #ifndef _NETINET_SCTP_CONSTANTS_H_
@@ -586,12 +586,7 @@ extern void getwintimeofday(struct timeval *tv);
  * number of clusters as a base. This way high bandwidth environments will
  * not get impacted by the lower bandwidth sending a bunch of 1 byte chunks
  */
-#ifdef __Panda__
-#define SCTP_ASOC_MAX_CHUNKS_ON_QUEUE 10240
-#else
 #define SCTP_ASOC_MAX_CHUNKS_ON_QUEUE 512
-#endif
-
 
 /*
  * Basically the minimum amount of time before I do a early FR. Making this
@@ -776,9 +771,8 @@ extern void getwintimeofday(struct timeval *tv);
 #define SCTP_FROM_SCTP_ASCONF       0x80000000
 #define SCTP_FROM_SCTP_OUTPUT       0x90000000
 #define SCTP_FROM_SCTP_PEELOFF      0xa0000000
-#define SCTP_FROM_SCTP_PANDA        0xb0000000
-#define SCTP_FROM_SCTP_SYSCTL       0xc0000000
-#define SCTP_FROM_SCTP_CC_FUNCTIONS 0xd0000000
+#define SCTP_FROM_SCTP_SYSCTL       0xb0000000
+#define SCTP_FROM_SCTP_CC_FUNCTIONS 0xc0000000
 
 /* Location ID's */
 #define SCTP_LOC_1  0x00000001

@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_indata.c 361243 2020-05-19 07:23:35Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_indata.c 361872 2020-06-06 18:20:09Z tuexen $");
 #endif
 
 #include <netinet/sctp_os.h>
@@ -2702,14 +2702,12 @@ sctp_process_data(struct mbuf **mm, int iphlen, int *offset, int length,
 	 */
 	asoc->last_data_chunk_from = net;
 
-#ifndef __Panda__
 	/*-
 	 * Now before we proceed we must figure out if this is a wasted
 	 * cluster... i.e. it is a small packet sent in and yet the driver
 	 * underneath allocated a full cluster for it. If so we must copy it
 	 * to a smaller mbuf and free up the cluster mbuf. This will help
-	 * with cluster starvation. Note for __Panda__ we don't do this
-	 * since it has clusters all the way down to 64 bytes.
+	 * with cluster starvation.
 	 */
 	if (SCTP_BUF_LEN(m) < (long)MLEN && SCTP_BUF_NEXT(m) == NULL) {
 		/* we only handle mbufs that are singletons.. not chains */
@@ -2731,7 +2729,6 @@ sctp_process_data(struct mbuf **mm, int iphlen, int *offset, int length,
 			m = *mm;
 		}
 	}
-#endif
 	/* get pointer to the first chunk header */
 	ch = (struct sctp_chunkhdr *)sctp_m_getptr(m, *offset,
 	                                           sizeof(struct sctp_chunkhdr),
