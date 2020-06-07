@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet/sctp_output.h 351654 2019-09-01 10:09:53Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet/sctp_output.h 361895 2020-06-07 14:39:20Z tuexen $");
 #endif
 
 #ifndef _NETINET_SCTP_OUTPUT_H_
@@ -79,7 +79,7 @@ sctp_v4src_match_nexthop(struct sctp_ifa *sifa, sctp_route_t *ro);
 #endif
 
 void sctp_send_initiate(struct sctp_inpcb *, struct sctp_tcb *, int
-#if !defined(__APPLE__) && !defined(SCTP_SO_LOCK_TESTING)
+#if !defined(__APPLE__)
     SCTP_UNUSED
 #endif
     );
@@ -168,12 +168,12 @@ sctp_output(struct sctp_inpcb *,
 #endif
 
 void sctp_chunk_output(struct sctp_inpcb *, struct sctp_tcb *, int, int
-#if !defined(__APPLE__) && !defined(SCTP_SO_LOCK_TESTING)
+#if !defined(__APPLE__)
     SCTP_UNUSED
 #endif
     );
 void sctp_send_abort_tcb(struct sctp_tcb *, struct mbuf *, int
-#if !defined(__APPLE__) && !defined(SCTP_SO_LOCK_TESTING)
+#if !defined(__APPLE__)
     SCTP_UNUSED
 #endif
     );
