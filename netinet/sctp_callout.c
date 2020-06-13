@@ -34,12 +34,12 @@
 
 #if defined(__Userspace__)
 #include <sys/types.h>
-#if !defined (__Userspace_os_Windows)
+#if !defined(_WIN32)
 #include <sys/wait.h>
 #include <unistd.h>
 #include <pthread.h>
 #endif
-#if defined(__Userspace_os_NaCl)
+#if defined(__native_client__)
 #include <sys/select.h>
 #endif
 #include <stdlib.h>
@@ -180,7 +180,7 @@ sctp_handle_tick(uint32_t elapsed_ticks)
 	SCTP_TIMERQ_UNLOCK();
 }
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && !defined(__Userspace__)
 void
 sctp_timeout(void *arg SCTP_UNUSED)
 {
@@ -197,7 +197,7 @@ user_sctp_timer_iterate(void *arg)
 {
 	sctp_userspace_set_threadname("SCTP timer");
 	for (;;) {
-#if defined (__Userspace_os_Windows)
+#if defined(_WIN32)
 		Sleep(TIMEOUT_INTERVAL);
 #else
 		struct timespec amount, remaining;
