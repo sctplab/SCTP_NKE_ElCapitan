@@ -317,9 +317,6 @@ struct mbuf *sctp_m_prepend_2(struct mbuf *m, int len, int how);
 		if (rt != NULL) \
 			rt->rt_rmx.rmx_mtu = mtu; \
 	} while (0)
-/* (de-)register interface event notifications */
-#define SCTP_REGISTER_INTERFACE(ifhandle, af)
-#define SCTP_DEREGISTER_INTERFACE(ifhandle, af)
 
 /*************************/
 /* These are for logging */
