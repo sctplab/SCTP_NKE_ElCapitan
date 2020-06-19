@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
  * Copyright (c) 2001-2007, by Cisco Systems, Inc. All rights reserved.
  * Copyright (c) 2008-2012, by Randall Stewart. All rights reserved.
  * Copyright (c) 2008-2012, by Michael Tuexen. All rights reserved.
@@ -32,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 309683 2016-12-07 21:24:49Z tuexen $");
+__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 362332 2020-06-18 16:22:09Z tuexen $");
 #endif
 
 #include <stdio.h>
@@ -131,7 +133,7 @@ SCTPPrintAnAddress(struct sockaddr *a)
 static void
 in6_sin6_2_sin(struct sockaddr_in *sin, struct sockaddr_in6 *sin6)
 {
-	memset(sin, 0, sizeof(*sin));
+	bzero(sin, sizeof(*sin));
 	sin->sin_len = sizeof(struct sockaddr_in);
 	sin->sin_family = AF_INET;
 	sin->sin_port = sin6->sin6_port;
@@ -483,7 +485,7 @@ sctp_getpaddrs(int sd, sctp_assoc_t id, struct sockaddr **raddrs)
 		return (-1);
 	}
 	/* size required is returned in 'asoc' */
-	opt_len = (socklen_t)((size_t)asoc + sizeof(struct sctp_getaddresses));
+	opt_len = (socklen_t)((size_t)asoc + sizeof(sctp_assoc_t));
 	addrs = calloc(1, (size_t)opt_len);
 	if (addrs == NULL) {
 		errno = ENOMEM;
@@ -543,9 +545,7 @@ sctp_getladdrs(int sd, sctp_assoc_t id, struct sockaddr **raddrs)
 		errno = ENOTCONN;
 		return (-1);
 	}
-	opt_len = (socklen_t)(size_of_addresses +
-	                      sizeof(struct sockaddr_storage) +
-			      sizeof(struct sctp_getaddresses));
+	opt_len = (socklen_t)(size_of_addresses + sizeof(sctp_assoc_t));
 	addrs = calloc(1, (size_t)opt_len);
 	if (addrs == NULL) {
 		errno = ENOMEM;
@@ -656,7 +656,7 @@ sctp_sendmsg(int s,
 		}
 		who = (struct sockaddr *)&addr;
 	}
-	 
+
 	iov.iov_base = (char *)data;
 	iov.iov_len = len;
 
@@ -1087,14 +1087,14 @@ sctp_sendv(int sd,
 		if ((infolen != 0) || (info != NULL)) {
 			free(cmsgbuf);
 			errno = EINVAL;
-			return (-1);			
+			return (-1);
 		}
 		break;
 	case SCTP_SENDV_SNDINFO:
 		if ((info == NULL) || (infolen < sizeof(struct sctp_sndinfo))) {
 			free(cmsgbuf);
 			errno = EINVAL;
-			return (-1);			
+			return (-1);
 		}
 		cmsg->cmsg_level = IPPROTO_SCTP;
 		cmsg->cmsg_type = SCTP_SNDINFO;
@@ -1108,33 +1108,33 @@ sctp_sendv(int sd,
 		if ((info == NULL) || (infolen < sizeof(struct sctp_prinfo))) {
 			free(cmsgbuf);
 			errno = EINVAL;
-			return (-1);			
+			return (-1);
 		}
 		cmsg->cmsg_level = IPPROTO_SCTP;
 		cmsg->cmsg_type = SCTP_PRINFO;
 		cmsg->cmsg_len = CMSG_LEN(sizeof(struct sctp_prinfo));
 		memcpy(CMSG_DATA(cmsg), info, sizeof(struct sctp_prinfo));
 		msg.msg_controllen += CMSG_SPACE(sizeof(struct sctp_prinfo));
-		cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_prinfo)));		
+		cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_prinfo)));
 		break;
 	case SCTP_SENDV_AUTHINFO:
 		if ((info == NULL) || (infolen < sizeof(struct sctp_authinfo))) {
 			free(cmsgbuf);
 			errno = EINVAL;
-			return (-1);			
+			return (-1);
 		}
 		cmsg->cmsg_level = IPPROTO_SCTP;
 		cmsg->cmsg_type = SCTP_AUTHINFO;
 		cmsg->cmsg_len = CMSG_LEN(sizeof(struct sctp_authinfo));
 		memcpy(CMSG_DATA(cmsg), info, sizeof(struct sctp_authinfo));
 		msg.msg_controllen += CMSG_SPACE(sizeof(struct sctp_authinfo));
-		cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_authinfo)));		
+		cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_authinfo)));
 		break;
 	case SCTP_SENDV_SPA:
 		if ((info == NULL) || (infolen < sizeof(struct sctp_sendv_spa))) {
 			free(cmsgbuf);
 			errno = EINVAL;
-			return (-1);			
+			return (-1);
 		}
 		spa_info = (struct sctp_sendv_spa *)info;
 		if (spa_info->sendv_flags & SCTP_SEND_SNDINFO_VALID) {
@@ -1152,7 +1152,7 @@ sctp_sendv(int sd,
 			cmsg->cmsg_len = CMSG_LEN(sizeof(struct sctp_prinfo));
 			memcpy(CMSG_DATA(cmsg), &spa_info->sendv_prinfo, sizeof(struct sctp_prinfo));
 			msg.msg_controllen += CMSG_SPACE(sizeof(struct sctp_prinfo));
-			cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_prinfo)));		
+			cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_prinfo)));
 		}
 		if (spa_info->sendv_flags & SCTP_SEND_AUTHINFO_VALID) {
 			cmsg->cmsg_level = IPPROTO_SCTP;
@@ -1160,7 +1160,7 @@ sctp_sendv(int sd,
 			cmsg->cmsg_len = CMSG_LEN(sizeof(struct sctp_authinfo));
 			memcpy(CMSG_DATA(cmsg), &spa_info->sendv_authinfo, sizeof(struct sctp_authinfo));
 			msg.msg_controllen += CMSG_SPACE(sizeof(struct sctp_authinfo));
-			cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_authinfo)));		
+			cmsg = (struct cmsghdr *)((caddr_t)cmsg + CMSG_SPACE(sizeof(struct sctp_authinfo)));
 		}
 		break;
 	default:
