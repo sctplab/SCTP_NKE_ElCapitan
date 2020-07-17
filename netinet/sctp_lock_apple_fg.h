@@ -103,6 +103,10 @@
 	lck_mtx_lock(SCTP_BASE_INFO(ipi_addr_mtx))
 #define SCTP_IPI_ADDR_WUNLOCK() \
 	lck_mtx_unlock(SCTP_BASE_INFO(ipi_addr_mtx))
+#define SCTP_IPI_ADDR_LOCK_ASSERT() \
+	lck_mtx_assert(SCTP_BASE_INFO(ipi_addr_mtx), LCK_MTX_ASSERT_OWNED)
+#define SCTP_IPI_ADDR_WLOCK_ASSERT() \
+        lck_mtx_assert(SCTP_BASE_INFO(ipi_addr_mtx), LCK_MTX_ASSERT_OWNED)
 
 
 #define SCTP_TCB_SEND_LOCK_INIT(_tcb) \
