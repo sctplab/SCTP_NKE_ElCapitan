@@ -2015,7 +2015,7 @@ sctp_timeout_handler(void *t)
 			 type, inp, stcb, net));
 		SCTP_STAT_INCR(sctps_timosecret);
 		(void)SCTP_GETTIME_TIMEVAL(&tv);
-		inp->sctp_ep.time_of_secret_change = tv.tv_sec;
+		inp->sctp_ep.time_of_secret_change = (unsigned int)tv.tv_sec;
 		inp->sctp_ep.last_secret_number =
 		    inp->sctp_ep.current_secret_number;
 		inp->sctp_ep.current_secret_number++;
@@ -5149,9 +5149,13 @@ sctp_pull_off_control_to_new_inp(struct sctp_inpcb *old_inp,
 	new_so = new_inp->sctp_socket;
 	TAILQ_INIT(&tmp_queue);
 #if (defined(__FreeBSD__) || defined(__APPLE__)) && !defined(__Userspace__)
+#if defined(__FreeBSD__)
+	error = SOCK_IO_RECV_LOCK(old_so, waitflags);
+#else
 	error = sblock(&old_so->so_rcv, waitflags);
+#endif
 	if (error) {
-		/* Gak, can't get sblock, we have a problem.
+		/* Gak, can't get I/O lock, we have a problem.
 		 * data will be left stranded.. and we
 		 * don't dare look at it since the
 		 * other thread may be reading something.
@@ -6712,7 +6716,7 @@ sctp_sorecvmsg(struct socket *so,
 					copied_so_far += cp_len;
 					freed_so_far += (uint32_t)cp_len;
 					freed_so_far += MSIZE;
-					atomic_subtract_int(&control->length, cp_len);
+					atomic_subtract_int(&control->length, (int)cp_len);
 					control->data = sctp_m_free(m);
 					m = control->data;
 					/* been through it all, must hold sb lock ok to null tail */
@@ -6749,10 +6753,10 @@ sctp_sorecvmsg(struct socket *so,
 					if (SCTP_BASE_SYSCTL(sctp_logging_level) & SCTP_SB_LOGGING_ENABLE) {
 						sctp_sblog(&so->so_rcv, control->do_not_ref_stcb?NULL:stcb, SCTP_LOG_SBFREE, (int)cp_len);
 					}
-					atomic_subtract_int(&so->so_rcv.sb_cc, cp_len);
+					atomic_subtract_int(&so->so_rcv.sb_cc, (int)cp_len);
 					if ((control->do_not_ref_stcb == 0) &&
 					    stcb) {
-						atomic_subtract_int(&stcb->asoc.sb_cc, cp_len);
+						atomic_subtract_int(&stcb->asoc.sb_cc, (int)cp_len);
 					}
 					copied_so_far += cp_len;
 					freed_so_far += (uint32_t)cp_len;
@@ -6761,7 +6765,7 @@ sctp_sorecvmsg(struct socket *so,
 						sctp_sblog(&so->so_rcv, control->do_not_ref_stcb?NULL:stcb,
 							   SCTP_LOG_SBRESULT, 0);
 					}
-					atomic_subtract_int(&control->length, cp_len);
+					atomic_subtract_int(&control->length, (int)cp_len);
 				} else {
 					copied_so_far += cp_len;
 				}

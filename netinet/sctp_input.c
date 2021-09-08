@@ -2795,10 +2795,10 @@ sctp_handle_cookie_echo(struct mbuf *m, int iphlen, int offset,
 		if ((uint32_t)diff.tv_sec > UINT32_MAX / 1000000) {
 			staleness = UINT32_MAX;
 		} else {
-			staleness = diff.tv_sec * 1000000;
+			staleness = (uint32_t)diff.tv_sec * 1000000;
 		}
 		if (UINT32_MAX - staleness >= (uint32_t)diff.tv_usec) {
-			staleness += diff.tv_usec;
+			staleness += (uint32_t)diff.tv_usec;
 		} else {
 			staleness = UINT32_MAX;
 		}
@@ -3067,7 +3067,6 @@ sctp_handle_cookie_echo(struct mbuf *m, int iphlen, int offset,
 			inp->sctp_context = (*inp_p)->sctp_context;
 			inp->local_strreset_support = (*inp_p)->local_strreset_support;
 			inp->fibnum = (*inp_p)->fibnum;
-			inp->inp_starting_point_for_iterator = NULL;
 #if defined(__Userspace__)
 			inp->ulp_info = (*inp_p)->ulp_info;
 			inp->recv_callback = (*inp_p)->recv_callback;

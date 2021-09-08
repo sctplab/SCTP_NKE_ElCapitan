@@ -3004,7 +3004,7 @@ sctp_inpcb_alloc(struct socket *so, uint32_t vrf_id)
 
 	/* Setup the initial secret */
 	(void)SCTP_GETTIME_TIMEVAL(&time);
-	m->time_of_secret_change = time.tv_sec;
+	m->time_of_secret_change = (unsigned int)time.tv_sec;
 
 	for (i = 0; i < SCTP_NUMBER_OF_SECRETS; i++) {
 		m->secret_key[0][i] = sctp_select_initial_TSN(m);
@@ -3887,19 +3887,15 @@ sctp_inpcb_free(struct sctp_inpcb *inp, int immediate, int from)
 	/* mark any iterators on the list or being processed */
 	sctp_iterator_inp_being_freed(inp);
 	SCTP_ITERATOR_UNLOCK();
-	so = inp->sctp_socket;
-	if (inp->sctp_flags & SCTP_PCB_FLAGS_SOCKET_ALLGONE) {
-		/* been here before.. eeks.. get out of here */
-		SCTP_PRINTF("This conflict in free SHOULD not be happening! from %d, imm %d\n", from, immediate);
-#ifdef SCTP_LOG_CLOSING
-		sctp_log_closing(inp, NULL, 1);
-#endif
-		return;
-	}
+
 	SCTP_ASOC_CREATE_LOCK(inp);
 	SCTP_INP_INFO_WLOCK();
-
 	SCTP_INP_WLOCK(inp);
+	so = inp->sctp_socket;
+	KASSERT((inp->sctp_flags & SCTP_PCB_FLAGS_SOCKET_GONE) != 0,
+	    ("%s: inp %p still has socket", __func__, inp));
+	KASSERT((inp->sctp_flags & SCTP_PCB_FLAGS_SOCKET_ALLGONE) == 0,
+	    ("%s: double free of inp %p", __func__, inp));
 	if (from == SCTP_CALLED_AFTER_CMPSET_OFCLOSE) {
 		inp->sctp_flags &= ~SCTP_PCB_FLAGS_CLOSE_IP;
 		/* socket is gone, so no more wakeups allowed */
