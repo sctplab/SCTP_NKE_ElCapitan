@@ -1097,7 +1097,7 @@ sctp_over_udp_ipv4_cb(socket_t udp_sock, void *cookie SCTP_UNUSED, int watif SCT
 			return;
 		}
 	}
-	sh = mtod(m, struct sctphdr *);;
+	sh = mtod(m, struct sctphdr *);
 	ch = (struct sctp_chunkhdr *)((caddr_t)sh + sizeof(struct sctphdr));
 	offset -= sizeof(struct sctp_chunkhdr);
 	port = src.sin_port;
