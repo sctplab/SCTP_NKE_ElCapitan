@@ -129,6 +129,8 @@
 	lck_mtx_lock((_tcb)->tcb_send_mtx)
 #define SCTP_TCB_SEND_UNLOCK(_tcb) \
 	lck_mtx_unlock((_tcb)->tcb_send_mtx)
+#define SCTP_TCB_SEND_LOCK_ASSERT(_tcb) \
+	lck_mtx_assert((_tcb)->tcb_send_mtx, LCK_MTX_ASSERT_OWNED)
 
 
 /* Lock for INP */
