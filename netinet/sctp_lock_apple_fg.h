@@ -89,11 +89,11 @@
 	lck_rw_lock_exclusive(SCTP_BASE_INFO(sctbinfo).ipi_lock)
 #define SCTP_INP_INFO_WUNLOCK() \
 	lck_rw_unlock_exclusive(SCTP_BASE_INFO(sctbinfo).ipi_lock)
-#define SCTP_INP_INFO_LOCK_ASSERT()
+#define SCTP_INP_INFO_LOCK_ASSERT() \
 	lck_mtx_assert(SCTP_BASE_INFO(sctbinfo).ipi_lock, LCK_RW_ASSERT_HELD)
-#define SCTP_INP_INFO_RLOCK_ASSERT()
+#define SCTP_INP_INFO_RLOCK_ASSERT() \
 	lck_mtx_assert(SCTP_BASE_INFO(sctbinfo).ipi_lock, LCK_RW_ASSERT_SHARED)
-#define SCTP_INP_INFO_WLOCK_ASSERT()
+#define SCTP_INP_INFO_WLOCK_ASSERT() \
 	lck_mtx_assert(SCTP_BASE_INFO(sctbinfo).ipi_lock, LCK_RW_ASSERT_EXCLUSIVE)
 #define SCTP_INP_INFO_LOCK_DESTROY() \
         lck_rw_free(SCTP_BASE_INFO(sctbinfo).ipi_lock, SCTP_MTX_GRP)
