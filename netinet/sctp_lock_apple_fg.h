@@ -303,7 +303,7 @@ do { \
 
 #define SCTP_DECR_ASOC_COUNT() \
 		do { \
-			atomic_add_int(&SCTP_BASE_INFO(ipi_count_asoc), -1); \
+			atomic_subtract_int(&SCTP_BASE_INFO(ipi_count_asoc), 1); \
 		} while (0)
 
 #define SCTP_INCR_LADDR_COUNT() \
@@ -313,7 +313,7 @@ do { \
 
 #define SCTP_DECR_LADDR_COUNT() \
 		do { \
-			atomic_add_int(&SCTP_BASE_INFO(ipi_count_laddr), -1); \
+			atomic_subtract_int(&SCTP_BASE_INFO(ipi_count_laddr), 1); \
 		} while (0)
 
 #define SCTP_INCR_RADDR_COUNT() \
@@ -354,7 +354,7 @@ do { \
 
 #define SCTP_DECR_READQ_COUNT() \
 		do { \
-			atomic_add_int(&SCTP_BASE_INFO(ipi_count_readq), -1); \
+			atomic_subtract_int(&SCTP_BASE_INFO(ipi_count_readq), 1); \
 		} while (0)
 
 #define SCTP_INCR_STRMOQ_COUNT() \
