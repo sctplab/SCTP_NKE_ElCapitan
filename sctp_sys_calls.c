@@ -34,7 +34,7 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/lib/libc/net/sctp_sys_calls.c 362474 2020-06-21 23:47:27Z tuexen $");
+__FBSDID("$FreeBSD$");
 #endif
 
 #include <stdbool.h>
@@ -461,23 +461,27 @@ sctp_getpaddrs(int sd, sctp_assoc_t id, struct sockaddr **raddrs)
 {
 	struct sctp_getaddresses *addrs;
 	struct sockaddr *sa;
-	sctp_assoc_t asoc;
 	caddr_t lim;
 	socklen_t opt_len;
+	uint32_t size_of_addresses;
 	int cnt;
 
 	if (raddrs == NULL) {
 		errno = EFAULT;
 		return (-1);
 	}
-	asoc = id;
-	opt_len = (socklen_t)sizeof(sctp_assoc_t);
+	/* When calling getsockopt(), the value contains the assoc_id. */
+	size_of_addresses = (uint32_t)id;
+	opt_len = (socklen_t)sizeof(uint32_t);
 	if (getsockopt(sd, IPPROTO_SCTP, SCTP_GET_REMOTE_ADDR_SIZE,
-	    &asoc, &opt_len) != 0) {
-		return (-1);
+	    &size_of_addresses, &opt_len) != 0) {
+		if (errno == ENOENT) {
+			return (0);
+		} else {
+			return (-1);
+		}
 	}
-	/* size required is returned in 'asoc' */
-	opt_len = (socklen_t)((size_t)asoc + sizeof(struct sctp_getaddresses));
+	opt_len = (socklen_t)((size_t)size_of_addresses + sizeof(struct sctp_getaddresses));
 	addrs = calloc(1, (size_t)opt_len);
 	if (addrs == NULL) {
 		errno = ENOMEM;
@@ -516,10 +520,10 @@ int
 sctp_getladdrs(int sd, sctp_assoc_t id, struct sockaddr **raddrs)
 {
 	struct sctp_getaddresses *addrs;
-	caddr_t lim;
 	struct sockaddr *sa;
-	size_t size_of_addresses;
+	caddr_t lim;
 	socklen_t opt_len;
+	uint32_t size_of_addresses;
 	int cnt;
 
 	if (raddrs == NULL) {
@@ -527,17 +531,12 @@ sctp_getladdrs(int sd, sctp_assoc_t id, struct sockaddr **raddrs)
 		return (-1);
 	}
 	size_of_addresses = 0;
-	opt_len = (socklen_t)sizeof(int);
+	opt_len = (socklen_t)sizeof(uint32_t);
 	if (getsockopt(sd, IPPROTO_SCTP, SCTP_GET_LOCAL_ADDR_SIZE,
 	    &size_of_addresses, &opt_len) != 0) {
-		errno = ENOMEM;
 		return (-1);
 	}
-	if (size_of_addresses == 0) {
-		errno = ENOTCONN;
-		return (-1);
-	}
-	opt_len = (socklen_t)(size_of_addresses + sizeof(struct sctp_getaddresses));
+	opt_len = (socklen_t)((size_t)size_of_addresses + sizeof(struct sctp_getaddresses));
 	addrs = calloc(1, (size_t)opt_len);
 	if (addrs == NULL) {
 		errno = ENOMEM;
@@ -548,8 +547,11 @@ sctp_getladdrs(int sd, sctp_assoc_t id, struct sockaddr **raddrs)
 	if (getsockopt(sd, IPPROTO_SCTP, SCTP_GET_LOCAL_ADDRESSES, addrs,
 	    &opt_len) != 0) {
 		free(addrs);
-		errno = ENOMEM;
 		return (-1);
+	}
+	if (size_of_addresses == 0) {
+		free(addrs);
+		return (0);
 	}
 	*raddrs = &addrs->addr[0].sa;
 	cnt = 0;
@@ -811,7 +813,7 @@ sctp_sendx(int sd, const void *msg, size_t msg_len,
 	aa++;
 	memcpy((caddr_t)aa, addrs, (size_t)(len - sizeof(int)));
 	ret = setsockopt(sd, IPPROTO_SCTP, SCTP_CONNECT_X_DELAYED, (void *)buf,
-	    (socklen_t) len);
+	    (socklen_t)len);
 
 	free(buf);
 	if (ret != 0) {
@@ -829,7 +831,7 @@ continue_send:
 	sinfo->sinfo_assoc_id = sctp_getassocid(sd, addrs);
 	if (sinfo->sinfo_assoc_id == 0) {
 		(void)setsockopt(sd, IPPROTO_SCTP, SCTP_CONNECT_X_COMPLETE, (void *)addrs,
-		    (socklen_t) addrs->sa_len);
+		    (socklen_t)addrs->sa_len);
 		errno = ENOENT;
 		return (-1);
 	}
@@ -837,7 +839,7 @@ continue_send:
 	saved_errno = errno;
 	if (no_end_cx == 0)
 		(void)setsockopt(sd, IPPROTO_SCTP, SCTP_CONNECT_X_COMPLETE, (void *)addrs,
-		    (socklen_t) addrs->sa_len);
+		    (socklen_t)addrs->sa_len);
 
 	errno = saved_errno;
 	return (ret);
@@ -1010,17 +1012,17 @@ ssize_t sctp_recvv(int sd,
 		}
 		if (rcvinfo != NULL) {
 			if ((nxtinfo != NULL) && (*infolen >= sizeof(struct sctp_recvv_rn))) {
-					struct sctp_recvv_rn *rn_info;
+				struct sctp_recvv_rn *rn_info;
 
-					rn_info = (struct sctp_recvv_rn *)info;
-					rn_info->recvv_rcvinfo = *rcvinfo;
-					rn_info->recvv_nxtinfo = *nxtinfo;
-					*infolen = (socklen_t)sizeof(struct sctp_recvv_rn);
-					*infotype = SCTP_RECVV_RN;
+				rn_info = (struct sctp_recvv_rn *)info;
+				rn_info->recvv_rcvinfo = *rcvinfo;
+				rn_info->recvv_nxtinfo = *nxtinfo;
+				*infolen = (socklen_t)sizeof(struct sctp_recvv_rn);
+				*infotype = SCTP_RECVV_RN;
 			} else if (*infolen >= sizeof(struct sctp_rcvinfo)) {
-					memcpy(info, rcvinfo, sizeof(struct sctp_rcvinfo));
-					*infolen = (socklen_t)sizeof(struct sctp_rcvinfo);
-					*infotype = SCTP_RECVV_RCVINFO;
+				memcpy(info, rcvinfo, sizeof(struct sctp_rcvinfo));
+				*infolen = (socklen_t)sizeof(struct sctp_rcvinfo);
+				*infotype = SCTP_RECVV_RCVINFO;
 			}
 		} else if (nxtinfo != NULL) {
 			if (*infolen >= sizeof(struct sctp_nxtinfo)) {
