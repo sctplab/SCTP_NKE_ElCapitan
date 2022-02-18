@@ -309,7 +309,7 @@ struct mbuf *sctp_m_prepend_2(struct mbuf *m, int len, int how);
 /*************************/
 /*      MTU              */
 /*************************/
-#define SCTP_GATHER_MTU_FROM_IFN_INFO(ifn, ifn_index, af) ifnet_mtu((struct ifnet *)ifn)
+#define SCTP_GATHER_MTU_FROM_IFN_INFO(ifn, ifn_index) ifnet_mtu((struct ifnet *)ifn)
 #define SCTP_GATHER_MTU_FROM_ROUTE(sctp_ifa, sa, rt) ((rt != NULL) ? rt->rt_rmx.rmx_mtu : 0)
 #define SCTP_GATHER_MTU_FROM_INTFC(sctp_ifn) ((sctp_ifn->ifn_p != NULL) ? ((struct ifnet *)(sctp_ifn->ifn_p))->if_mtu : 0)
 #define SCTP_SET_MTU_OF_ROUTE(sa, rt, mtu) \
