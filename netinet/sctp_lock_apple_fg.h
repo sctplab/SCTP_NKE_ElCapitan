@@ -121,18 +121,6 @@
         lck_mtx_assert(SCTP_BASE_INFO(ipi_addr_mtx), LCK_MTX_ASSERT_OWNED)
 
 
-#define SCTP_TCB_SEND_LOCK_INIT(_tcb) \
-	(_tcb)->tcb_send_mtx = lck_mtx_alloc_init(SCTP_MTX_GRP, SCTP_MTX_ATTR)
-#define SCTP_TCB_SEND_LOCK_DESTROY(_tcb) \
-	lck_mtx_free((_tcb)->tcb_send_mtx, SCTP_MTX_GRP)
-#define SCTP_TCB_SEND_LOCK(_tcb) \
-	lck_mtx_lock((_tcb)->tcb_send_mtx)
-#define SCTP_TCB_SEND_UNLOCK(_tcb) \
-	lck_mtx_unlock((_tcb)->tcb_send_mtx)
-#define SCTP_TCB_SEND_LOCK_ASSERT(_tcb) \
-	lck_mtx_assert((_tcb)->tcb_send_mtx, LCK_MTX_ASSERT_OWNED)
-
-
 /* Lock for INP */
 #if defined(SCTP_INP_RWLOCK)  /* shared locking */
 #define SCTP_INP_LOCK_INIT(_inp) \
