@@ -385,6 +385,8 @@ struct mbuf *sctp_m_prepend_2(struct mbuf *m, int len, int how);
 #define SCTP_SORESERVE(so, send, recv)	soreserve(so, send, recv)
 /* wakeup a socket */
 #define SCTP_SOWAKEUP(so)	wakeup(&(so)->so_timeo)
+/* number of bytes ready to read */
+#define SCTP_SBAVAIL(sb)	(sb)->sb_cc
 /* clear the socket buffer state */
 #define SCTP_SB_CLEAR(sb)	\
 	(sb).sb_cc = 0;		\
