@@ -393,7 +393,7 @@ struct mbuf *sctp_m_prepend_2(struct mbuf *m, int len, int how);
 }
 #define SCTP_SB_DECR(sb, decr)				\
 {							\
-	SCTP_SAVE_ATOMIC_DECREMENT(&(sb)->sb_cc, incr);	\
+	SCTP_SAVE_ATOMIC_DECREMENT(&(sb)->sb_cc, decr);	\
 }
 /* clear the socket buffer state */
 #define SCTP_SB_CLEAR(sb)	\
