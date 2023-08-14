@@ -177,14 +177,16 @@
 #define SCTP_ASOC_CREATE_LOCK_CONTENDED(_inp) (0) /* Don't know if this is possible */
 
 
-#define SCTP_INP_READ_INIT(_inp) \
+#define SCTP_INP_READ_LOCK_INIT(_inp) \
 	(_inp)->inp_rdata_mtx = lck_mtx_alloc_init(SCTP_MTX_GRP, SCTP_MTX_ATTR)
-#define SCTP_INP_READ_DESTROY(_inp) \
+#define SCTP_INP_READ_LOCK_DESTROY(_inp) \
 	lck_mtx_free((_inp)->inp_rdata_mtx, SCTP_MTX_GRP)
 #define SCTP_INP_READ_LOCK(_inp) \
 	lck_mtx_lock((_inp)->inp_rdata_mtx)
 #define SCTP_INP_READ_UNLOCK(_inp) \
 	lck_mtx_unlock((_inp)->inp_rdata_mtx)
+#define SCTP_INP_READ_LOCK_ASSERT(_inp) \
+	lck_mtx_assert((_inp)->inp_rdata_mtx, LCK_MTX_ASSERT_OWNED)
 
 /* Lock for TCB */
 #define SCTP_TCB_LOCK_INIT(_tcb) \
