@@ -644,10 +644,10 @@ sctp_vtag_watchdog(void)
 				    (twait_block->vtag_block[j].tv_sec_at_expire == 0)) {
 					free_cnt++;
 				} else if ((twait_block->vtag_block[j].v_tag != 0) &&
-					   (twait_block->vtag_block[j].tv_sec_at_expire < (uint32_t)now.tv_sec)) {
+					   (twait_block->vtag_block[j].tv_sec_at_expire < now.tv_sec)) {
 					expired_cnt++;
 				} else if ((twait_block->vtag_block[j].v_tag != 0) &&
-					   (twait_block->vtag_block[j].tv_sec_at_expire >= (uint32_t)now.tv_sec)) {
+					   (twait_block->vtag_block[j].tv_sec_at_expire >= now.tv_sec)) {
 					inuse_cnt++;
 				} else {
 					other_cnt++;
